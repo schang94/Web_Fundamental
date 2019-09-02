@@ -135,11 +135,6 @@
 									f.action="delete.jsp";
 									f.submit();
 								});
-								$("#listEmp").on('click',function(){
-									event.preventDefault();	
-									
-									history.back(-1);
-								});
 							});
 						</script>
 					</div>

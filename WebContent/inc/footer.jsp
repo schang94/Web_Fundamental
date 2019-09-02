@@ -1,5 +1,5 @@
 <%@ page pageEncoding="UTF-8"%>
-<footer id="sticky-footer" class="py-4 bg-dark" style="color:white; margin-top: 1rem;">
+<footer id="sticky-footer" class="fixed-bottom py-4 bg-dark" style="color:white; margin-top: 1rem;">
 		<div class="container text-center">
 			<small>Copyright &copy; Your Website</small>
 		</div>

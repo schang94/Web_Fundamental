@@ -22,9 +22,13 @@
 									href="list.jsp?page=<%=paging - 1%>" tabindex="-1">&laquo;</a></li>
 								<%} %>
 								<% for(int i = paging ;i <= pageMax ;i++){%>
-									<li class="page-item"><a class="page-link" href="list.jsp?page=<%=i%>"><%=i%></a></li>
+									<li class=">page-item">
+									<a class="page-link " 
+										href=<%if(i==tempPage){%>"javascript:void(0);"<%}else{%>"list.jsp?page=<%=i%>"<%}%>><%=i%></a></li>
 									<% if(pageMax==i && pageMax*10 < count){%>
 										<li class="page-item"><a class="page-link" href="list.jsp?page=<%=paging+10%>">&raquo;</a>
 								</li>
 									<%}
 								} %>
+								
+								

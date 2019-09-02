@@ -4,15 +4,37 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="../inc/header.jsp"%>
 <%
-	int  tempPage = 0;
-	if(!request.getParameter("page").equals("")){
-		tempPage = Integer.parseInt(request.getParameter("page"));
+	String temp = request.getParameter("page");
+	
+	int tempPage = 0;
+	int paging =0;
+	if(temp == null || temp.length()==0){
+		tempPage = 1;
 	}
-	int  paging = tempPage;
+	
+	try{
+		tempPage = Integer.parseInt(temp);
+	} catch(NumberFormatException e){
+		tempPage = 1;
+	}
 	DeptDao dao = DeptDao.getInstance();
-	ArrayList<DeptDto> list = dao.select((paging-1)*10, 10);
+	
 	int count = dao.db_count();
+	int length = 10;
+	
+	if(tempPage*length > count){
+		tempPage = 1;
+	}
+	
+	paging = tempPage;
+	int start = (tempPage-1)*length;
+	
+	
+	ArrayList<DeptDto> list = dao.select(start, length);
+	
+	
 %>
+
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb justify-content-end">
 		<li class="breadcrumb-item"><a href="/">Home</a></li>

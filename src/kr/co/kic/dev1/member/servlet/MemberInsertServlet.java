@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 import kr.co.kic.dev1.dao.MemberDao;
 import kr.co.kic.dev1.dto.MemberDto;
 
-
 /**
  * Servlet implementation class MemberInsertServlet
  */
@@ -24,9 +23,11 @@ public class MemberInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		// request 객체를 사용하기전에 코딩해야한다.
 		// 파라미터중에서 한글을 보내는 경우는 반드시 코딩해야한다.
@@ -36,14 +37,13 @@ public class MemberInsertServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		MemberDao dao = MemberDao.getInstance();
-		
-		if(dao.insert(new MemberDto(id,email,password))) {
+		MemberDto dto = new MemberDto();
+		if (dao.insert(dto)) {
 			response.sendRedirect("/member/join/success");
 		} else {
 			response.sendRedirect("/member/join.html");
 		}
-		
-		
+
 	}
 
 }

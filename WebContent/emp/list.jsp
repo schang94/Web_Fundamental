@@ -4,14 +4,33 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="../inc/header.jsp"%>
 <%
-	int  tempPage = 0;
-	if(!request.getParameter("page").equals("")){
-		tempPage = Integer.parseInt(request.getParameter("page"));
+	String temp = request.getParameter("page");
+
+	int tempPage = 0;
+	int paging =0;
+	if(temp == null || temp.length()==0){
+		tempPage = 1;
 	}
-	int  paging = tempPage;
+	
+	try{
+		tempPage = Integer.parseInt(temp);
+	} catch(NumberFormatException e){
+		tempPage = 1;
+	}
 	EmpDao dao = EmpDao.getInstance();
-	ArrayList<EmpDto> list = dao.select((paging-1)*10, 10);
+	
 	int count = dao.db_count();
+	int length = 10;
+	
+	if(tempPage*length > count){
+		tempPage = 1;
+	}
+	
+	paging = tempPage;
+	int start = (tempPage-1)*length;
+	
+	
+	ArrayList<EmpDto> list = dao.select(start, length);
 %>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb justify-content-end">
@@ -64,7 +83,8 @@
 											int d_num = dto.getD_num();
 								%>
 								<tr>
-									<th class="text-center" scope="row"><a href="view.jsp?num=<%=num%>" id="viewEmp"><%=num%></a></th>
+									<th class="text-center" scope="row"><a
+										href="view.jsp?num=<%=num%>" id="viewEmp"><%=num%></a></th>
 									<td><%=name%></td>
 									<td><%=job%></td>
 									<td class="text-center"><%=mgr%></td>
@@ -73,8 +93,8 @@
 									<td class="text-center"><%=comm%></td>
 									<td class="text-center"><%=d_num%></td>
 								</tr>
-								
-								
+
+
 								<%
 										}
 									} else {
@@ -89,12 +109,12 @@
 						</table>
 
 						<nav aria-label="Page navigation example">
-							<ul class="pagination pagination-lg justify-content-center">				
+							<ul class="pagination pagination-lg justify-content-center">
 								<%@ include file="../inc/paging.jsp"%>
 							</ul>
 						</nav>
 						<div class="text-right">
-							<a href="write.jsp" id="saveEmp" class="btn btn-outline-primary">직원등록</a> 
+							<a href="write.jsp" id="saveEmp" class="btn btn-outline-primary">직원등록</a>
 							<a href="" class="btn btn-outline-success">리스트</a>
 						</div>
 					</div>
