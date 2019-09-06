@@ -1,4 +1,10 @@
+<%@page import="kr.co.kic.dev1.dto.MemberDto"%>
 <%@ page pageEncoding="UTF-8"%>
+<%
+	MemberDto memberDto = (MemberDto)session.getAttribute("member");
+	
+%>
+
 <!doctype html>
 <html lang="en">
 
@@ -13,6 +19,15 @@
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<script src="../js/jquery-3.4.1.js"></script>
 	<title>Bootstrap Template</title>
+	<script>
+		$(function(){
+			$("page_title").on("click",function(){
+				<%
+				String a = request.getRequestURI();
+				%>
+			});
+		});
+	</script>
 </head>
 
 <body>
@@ -22,7 +37,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="page_title">
 				<li class="nav-item active">
 					<a class="nav-link" href="/">Home</a>
 				</li>
@@ -33,18 +48,26 @@
 					<a class="nav-link" href="/dept/list.jsp">Department</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/emp/list.jsp">Employee</a>
+					<a class="nav-link" href="/emp_ajax/list.jsp">Employee</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/member/list.jsp">Member</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/file/index.jsp">File Upload</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a class="nav-link" href="/member/register.jsp">Register</a>
+					<a class="nav-link" href="/member/register.jsp"><i class="fa fa-file-text-o"></i> Register</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/member/login.jsp">Login</a>
+					<%if(memberDto == null) {%>
+						<a class="nav-link" href="/member/login.jsp"><i class="fa fa-user"></i> Login</a>
+					<%} else { %>
+						<a class="nav-link" href="/member/logout.jsp"><i class="fa fa-user"></i> Logout (<%=memberDto.getName()%>님 환영합니다.)</a>
+					<%} %>
+					
 				</li>
 			</ul>
 		</div>

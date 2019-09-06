@@ -15,7 +15,7 @@
 %>
 	<script>
 	 	alert("성공");
-	 	location.href = "list.jsp?page=1";
+	 	location.href = "list.jsp";
 	</script>
 	<%}else { %>
 	<script>

@@ -3,26 +3,26 @@
 <%@ page pageEncoding="UTF-8"%>
 <%
 	request.setCharacterEncoding("utf-8");
-	String name = request.getParameter("name");
-	String id = request.getParameter("id");
 	String email = request.getParameter("email");
 	String pwd = request.getParameter("pwd");
-	String phone = request.getParameter("phone");
 	
 	MemberDao dao = MemberDao.getInstance();
-	MemberDto dto = new MemberDto(id,email,name,pwd,phone);
+	MemberDto dto = new MemberDto(email,pwd);
 	
-	boolean isSuccess = dao.insert(dto);
-	
-	if(isSuccess) {
+	dto = dao.isMember(dto);
+	if(dto != null){
+		// 세션 기본 시간은 30분 (web.xml에서 확인가능)
+		// 프로그램에서 세션 시간을 변경할 수 있음.
+		session.setMaxInactiveInterval(30);
+		session.setAttribute("member", dto);
 %>
 	<script>
 		alert('성공');
-		location.href="list.jsp";
+		location.href="login.jsp";
 	</script>
 <% } else {%>
 	<script>
-		alert('실패');
+		alert('로그인 정보가 잘못되었습니다.');
 		history.back(-1);
 	</script>
 <% }%>

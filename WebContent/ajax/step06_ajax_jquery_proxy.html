@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ajax Post demo</title>
+<script src="../js/jquery-3.4.1.js"></script>
+<script>
+	$(function(){
+		$.ajax({
+			type : 'GET',
+			url : 'naver_book_proxy.jsp',
+			dataType : 'json',
+			success : function(json){
+				$('#divMessage').html(JSON.stringify(json));
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<div id="divMessage"></div>
+</body>
+</html>

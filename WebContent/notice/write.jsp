@@ -1,5 +1,9 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file = "../inc/header.jsp" %>
+<%
+	if(memberDto != null){
+	
+%>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb justify-content-end">
 			<li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -17,7 +21,7 @@
 							<div class="form-group row">
 								<label class="col-form-label col-sm-2" for=writer">작성자</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="writer" name="writer" placeholder="이름을 입력해 주세요">
+									<input type="text" class="form-control" id="writer" name="writer" placeholder="이름을 입력해 주세요" value="<%=memberDto.getId()%>" readonly="readonly">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -73,4 +77,10 @@
 
 		</div>
 	</div>
+	<%} else { %>
+		<script>
+			 alert('로그인 사용자만 등록 가능합니다.');
+			 location.href='list.jsp';
+		</script>
+	<%} %>
 	<%@ include file = "../inc/footer.jsp" %>

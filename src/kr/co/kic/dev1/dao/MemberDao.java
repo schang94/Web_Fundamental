@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import kr.co.kic.dev1.dto.MemberDto;
 import kr.co.kic.dev1.util.ConnLocator;
 
@@ -250,5 +253,148 @@ public class MemberDao {
 			}
 		}
 		return count;
+	}
+	public String selectJson(int start,int length){
+		
+		JSONObject jsonObj = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int index = 1;		
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT m_seq,m_id,m_email,m_name,m_phone,date_format(m_regdate,'%Y/%m/%d') m_regdate ");
+			sql.append("FROM member ");
+			sql.append("ORDER BY m_seq DESC ");
+			sql.append("LIMIT ?,? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(index++,start);
+			pstmt.setInt(index++,length);
+			
+			rs = pstmt.executeQuery();
+			JSONObject item = null;
+			
+			while(rs.next()) {
+				index = 1;
+				item = new JSONObject();
+				int seq= rs.getInt(index++);
+				String id = rs.getString(index++);
+				String email = rs.getString(index++);
+				String name = rs.getString(index++);
+				String phone = rs.getString(index++);
+				String regdate = rs.getString(index++);
+				
+				item.put("seq", seq);
+				item.put("id", id);
+				item.put("email", email);
+				item.put("name", name);
+				item.put("phone", phone);
+				item.put("regdate", regdate);
+				
+				jsonArray.add(item);
+			}
+			jsonObj.put("items",jsonArray);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(con != null) con.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jsonObj.toString();
+	}
+	public boolean isCheck(String id) {
+		boolean isExisted = false;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int index = 1;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT m_id ");
+			sql.append("FROM member ");
+			sql.append("WHERE m_id = ?");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(index++,id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				isExisted = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(con != null) con.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+				// TODO: handle exception
+			}
+		}
+		return isExisted;
+	}
+	
+	public MemberDto isMember(MemberDto m) {
+		MemberDto dto = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int index = 1;
+		
+		try {
+			con = ConnLocator.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT m_seq,m_id,m_email,m_name,m_phone,date_format(m_regdate,'%Y/%m/%d') m_regdate ");
+			sql.append("FROM member ");
+			sql.append("WHERE m_email=? AND m_pwd=PASSWORD(?);");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(index++,m.getEmail());
+			pstmt.setString(index++,m.getPassword());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				index = 1;
+				int seq= rs.getInt(index++);
+				String id = rs.getString(index++);
+				String email = rs.getString(index++);
+				String name = rs.getString(index++);
+				String phone = rs.getString(index++);
+				String regdate = rs.getString(index++);
+				dto = new MemberDto(seq,id,email,name,phone,regdate);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(con != null) con.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+				// TODO: handle exception
+			}
+		}
+		return dto;
 	}
 }

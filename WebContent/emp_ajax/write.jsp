@@ -79,7 +79,7 @@
 
 						<div class="text-right">
 							<a href="" id="saveEmp" class="btn btn-outline-primary">등록</a>
-							<a href="list.jsp?page=<%=cPage %>" id="listEmp" class="btn btn-outline-success">취소</a>
+							<a href="list.jsp?page=<%=cPage%>" id="listEmp" class="btn btn-outline-success">취소</a>
 						</div>
 						<script>
 							$(function(){

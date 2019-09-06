@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ajax Post demo</title>
+<script src="../js/jquery-3.4.1.min.js"></script>
+
+</head>
+<body>
+	<div id="divMessage"></div>
+
+</body>
+<script>
+	function aa(json){
+		document.getElementById("divMessage").innerHTML = JSON.stringify(json);
+	}
+	
+</script>
+<script src='http://acornacademy.co.kr/blockchain/naver_json.jsp?callback=aa'></script>
+</html>

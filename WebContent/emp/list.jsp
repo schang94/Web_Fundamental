@@ -4,33 +4,47 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="../inc/header.jsp"%>
 <%
-	String temp = request.getParameter("page");
+	String tempPage = request.getParameter("page");
+	int cPage =0;
+	if(tempPage == null || tempPage.length()==0){
+		cPage = 1;
+	}
 
-	int tempPage = 0;
-	int paging =0;
-	if(temp == null || temp.length()==0){
-		tempPage = 1;
-	}
-	
 	try{
-		tempPage = Integer.parseInt(temp);
+		cPage = Integer.parseInt(tempPage);
 	} catch(NumberFormatException e){
-		tempPage = 1;
+		cPage = 1;
 	}
-	EmpDao dao = EmpDao.getInstance();
-	
-	int count = dao.db_count();
 	int length = 10;
+	int blockLength = 10;
+	int totalPage = 0;
+	int startPage = 0;
+	int endPage = 0;
+	int start = (cPage-1)*length;
+
+
+	EmpDao dao = EmpDao.getInstance();
+	ArrayList<EmpDto> list = dao.select(start,length);
 	
-	if(tempPage*length > count){
-		tempPage = 1;
+	int totalRows = dao.db_count();
+	
+	totalPage = totalRows%length == 0 ? totalRows/length : totalRows/length +1;
+	
+	if(totalPage == 0){
+		totalPage = 1;
 	}
 	
-	paging = tempPage;
-	int start = (tempPage-1)*length;
 	
+	int currentBlock = cPage % blockLength == 0 ? cPage/blockLength : cPage/blockLength + 1;
+	int totalBlock = totalPage% blockLength == 0 ? totalPage/blockLength : totalPage/blockLength + 1;
+	// 1 11 21 .......
+	startPage = 1 + (currentBlock - 1)* blockLength;
+	// 10 20 30 ......
+	endPage = blockLength + (currentBlock - 1) * blockLength;
 	
-	ArrayList<EmpDto> list = dao.select(start, length);
+	if(currentBlock == totalBlock){
+		endPage = totalPage;
+	}
 %>
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb justify-content-end">
@@ -84,7 +98,7 @@
 								%>
 								<tr>
 									<th class="text-center" scope="row"><a
-										href="view.jsp?num=<%=num%>" id="viewEmp"><%=num%></a></th>
+										href="view.jsp?num=<%=num%>&page=<%=cPage %>" id="viewEmp"><%=num%></a></th>
 									<td><%=name%></td>
 									<td><%=job%></td>
 									<td class="text-center"><%=mgr%></td>
@@ -110,7 +124,25 @@
 
 						<nav aria-label="Page navigation example">
 							<ul class="pagination pagination-lg justify-content-center">
-								<%@ include file="../inc/paging.jsp"%>
+								<%if(currentBlock != 1) {%>
+									<li class="page-item"><a class="page-link" href="list.jsp?page=<%=startPage-1%>" tabindex="-1">&laquo;</a></li>
+								<%} else { %>
+									<li class="page-item disabled"><a class="page-link"href="#" tabindex="-1">&laquo;</a></li>
+								<%} %>
+								<% for(int i = startPage ; i <= endPage ; i++) {%>
+									<%if(cPage == i) { %>
+										<li class="page-item active"><a class="page-link" href="javascript:void(0);"><%=i%></a></li>
+									<%} else { %>
+										<li class="page-item"><a class="page-link" href="list.jsp?page=<%=i%>"><%=i%></a></li>
+									<%} %>
+									
+								<%} %>
+								<%if(currentBlock != totalBlock) {%>
+									<li class="page-item"><a class="page-link" href="list.jsp?page=<%=endPage+1%>">&raquo;</a>
+								<%} else { %>
+									<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+								<%} %>
+								
 							</ul>
 						</nav>
 						<div class="text-right">

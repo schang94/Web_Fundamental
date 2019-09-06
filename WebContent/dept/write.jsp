@@ -1,5 +1,18 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file = "../inc/header.jsp" %>
+<%
+	String tempPage = request.getParameter("page");
+	int cPage =0;
+	if(tempPage == null || tempPage.length()==0){
+		cPage = 1;
+	}
+	
+	try{
+		cPage = Integer.parseInt(tempPage);
+	} catch(NumberFormatException e){
+		cPage = 1;
+	}
+%>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb justify-content-end">
 			<li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -37,7 +50,7 @@
 
 						<div class="text-right">
 							<a href="" id="saveDept" class="btn btn-outline-primary">등록</a>
-							<a href="" id="listDept" class="btn btn-outline-success">리스트</a>
+							<a href="list.jsp?page=<%=cPage %>" id="listDept" class="btn btn-outline-success">취소</a>
 						</div>
 						<script>
 							$(function(){
@@ -64,11 +77,6 @@
 									
 									f.submit();
 								});
-								$("#listDept").on("click",function(event){
-									event.preventDefault();
-								 	history.back(-1);
-								});
-								
 							});
 						</script>
 					</div>

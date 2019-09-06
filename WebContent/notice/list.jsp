@@ -88,8 +88,7 @@
 						</nav>
 
 						<div class="text-right">
-							<a href="write.jsp" class="btn btn-outline-primary">글쓰기</a> <a
-								href="#" class="btn btn-outline-success">리스트</a>
+							<a href="#" class="btn btn-outline-success">리스트</a>
 						</div>
 					</div>
 				</div>

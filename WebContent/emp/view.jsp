@@ -4,6 +4,19 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file = "../inc/header.jsp" %>
 <%
+	String tempPage = request.getParameter("page");
+	int cPage =0;
+	if(tempPage == null || tempPage.length()==0){
+		cPage = 1;
+	}
+	
+	try{
+		cPage = Integer.parseInt(tempPage);
+	} catch(NumberFormatException e){
+		cPage = 1;
+	}
+%>
+<%
 	String tempNum = request.getParameter("num");
 	
 	int num = 0;
@@ -86,12 +99,13 @@
 									<input type="text" class="form-control" name="d_num" value="<%=d_num%>" id="d_num" placeholder="부서 번호를 입력해 주세요">
 								</div>
 							</div>
+							<input type="hidden" name="page" value="<%=cPage%>"/>
 						</form>
 
 						<div class="text-right">
 							<a href="" id="modifyEmp" class="btn btn-outline-primary">수정</a>
 							<a href="" id="deleteEmp" class="btn btn-outline-danger">삭제</a>
-							<a href="list.jsp?page=1" id="listEmp" class="btn btn-outline-success">리스트</a>
+							<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-success">리스트</a>
 						</div>
 						<script>
 							$(function(){

@@ -4,6 +4,7 @@
 	request.setCharacterEncoding("utf-8");
 	int num = Integer.parseInt(request.getParameter("num"));
 	int cPage = Integer.parseInt(request.getParameter("page"));
+	
 	EmpDao dao = EmpDao.getInstance();
  	boolean isSuccess = dao.delete(num);
 

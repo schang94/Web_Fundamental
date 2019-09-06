@@ -23,6 +23,9 @@ public class MemberDto {
 		this.regdate = regdate;
 	}
 	
+	public MemberDto(String email, String password) {
+		this(0,null,email,null,password,null,null);
+	}
 	public MemberDto(int seq, String id, String email, String name, String phone) {
 		this(seq,id,email,name,null,phone,null);
 	}

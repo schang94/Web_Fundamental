@@ -4,35 +4,48 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="../inc/header.jsp"%>
 <%
-	String temp = request.getParameter("page");
-	
-	int tempPage = 0;
-	int paging =0;
-	if(temp == null || temp.length()==0){
-		tempPage = 1;
+
+	String tempPage = request.getParameter("page");
+	int cPage =0;
+	if(tempPage == null || tempPage.length()==0){
+		cPage = 1;
 	}
-	
+
 	try{
-		tempPage = Integer.parseInt(temp);
+		cPage = Integer.parseInt(tempPage);
 	} catch(NumberFormatException e){
-		tempPage = 1;
+		cPage = 1;
 	}
-	DeptDao dao = DeptDao.getInstance();
-	
-	int count = dao.db_count();
 	int length = 10;
+	int blockLength = 10;
+	int totalPage = 0;
+	int startPage = 0;
+	int endPage = 0;
+	int start = (cPage-1)*length;
+
+
+	DeptDao dao = DeptDao.getInstance();
+	ArrayList<DeptDto> list = dao.select(start,length);
 	
-	if(tempPage*length > count){
-		tempPage = 1;
+	int totalRows = dao.db_count();
+	
+	totalPage = totalRows%length == 0 ? totalRows/length : totalRows/length +1;
+	
+	if(totalPage == 0){
+		totalPage = 1;
 	}
 	
-	paging = tempPage;
-	int start = (tempPage-1)*length;
 	
+	int currentBlock = cPage % blockLength == 0 ? cPage/blockLength : cPage/blockLength + 1;
+	int totalBlock = totalPage% blockLength == 0 ? totalPage/blockLength : totalPage/blockLength + 1;
+	// 1 11 21 .......
+	startPage = 1 + (currentBlock - 1)* blockLength;
+	// 10 20 30 ......
+	endPage = blockLength + (currentBlock - 1) * blockLength;
 	
-	ArrayList<DeptDto> list = dao.select(start, length);
-	
-	
+	if(currentBlock == totalBlock){
+		endPage = totalPage;
+	}
 %>
 
 <nav aria-label="breadcrumb">
@@ -47,7 +60,7 @@
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title">부서 명단</h5>
-					<div class="table-responsive-md">
+					<div class="table-responsive-md" id="page_table">
 						<table class="table table-hover">
 							<colgroup>
 								<col width="15%" />
@@ -71,7 +84,7 @@
 											String loc = dto.getLoc();
 								%>
 								<tr>
-									<th scope="row"><a href="view.jsp?num=<%=num%>"><%=num%></a></th>
+									<th scope="row"><a href="view.jsp?num=<%=num%>&page=<%=cPage %>"><%=num%></a></th>
 									<td><%=name%></td>
 									<td><%=loc%></td>
 									
@@ -93,13 +106,30 @@
 
 						<nav aria-label="Page navigation example">
 							<ul class="pagination pagination-lg justify-content-center">
-								<%@ include file="../inc/paging.jsp"%>
+								<%if(currentBlock != 1) {%>
+									<li class="page-item"><a class="page-link" href="javascript:util.pageLoading('<%=startPage+1%>','<%=length%>');" tabindex="-1">&laquo;</a></li>
+								<%} else { %>
+									<li class="page-item disabled"><a class="page-link"href="#" tabindex="-1">&laquo;</a></li>
+								<%} %>
+								<% for(int i = startPage ; i <= endPage ; i++) {%>
+									<%if(cPage == i) { %>
+										<li class="page-item active"><a class="page-link" href="javascript:void(0);"><%=i%></a></li>
+									<%} else { %>
+										<li class="page-item"><a class="page-link" href="javascript:util.pageLoading('<%=i%>','<%=length%>');"><%=i%></a></li>
+									<%} %>
+									
+								<%} %>
+								<%if(currentBlock != totalBlock) {%>
+									<li class="page-item"><a class="page-link" href="javascript:util.pageLoading('<%=endPage+1%>','<%=length%>');">&raquo;</a>
+								<%} else { %>
+									<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+								<%} %>
+								
 							</ul>
 						</nav>
 
 						<div class="text-right">
-							<a href="write.jsp" class="btn btn-outline-primary">부서등록</a> <a
-								href="" class="btn btn-outline-success">리스트</a>
+							<a href="write.jsp?page=<%=cPage%>" class="btn btn-outline-primary">부서등록</a>
 						</div>
 					</div>
 				</div>
@@ -108,4 +138,24 @@
 
 	</div>
 </div>
+<script>
+	const util = {"pageLoading" : function(p,len){
+		console.log(p);
+		let url = 'http://localhost/dept/list.jsp?page='+p+'&length='+len;
+		history.pushState(null,null,url);
+		$.ajax({
+			type : 'GET',
+			url : 'list_ajax.jsp?page='+p+'&length='+len,
+			dataType : 'html', // json, xml, html
+			error : function(){
+				alert('HTML loading error')
+			},
+			success : function(html){
+				$("#page_table").children().remove();
+				$("#page_table").html(html);
+			}
+		});
+	}}
+
+</script>
 <%@ include file="../inc/footer.jsp"%>

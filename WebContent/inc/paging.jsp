@@ -1,5 +1,6 @@
 <%@ page pageEncoding="EUC-KR"%>
-<% 
+<%-- 
+<%
 								
 								if(paging%10 == 0){
 									paging = (paging/10 - 1)*10 + 1;
@@ -31,4 +32,4 @@
 									<%}
 								} %>
 								
-								
+			--%>					

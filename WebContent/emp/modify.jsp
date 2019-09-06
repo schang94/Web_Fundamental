@@ -5,6 +5,7 @@
 	request.setCharacterEncoding("utf-8");
 
 	int num = Integer.parseInt(request.getParameter("num"));
+	int cPage = Integer.parseInt(request.getParameter("page"));
  	String name = request.getParameter("name");
  	String job = request.getParameter("job");
  	int mgr = Integer.parseInt(request.getParameter("mgr"));
@@ -25,7 +26,7 @@
 %>
 	<script>
 	 	alert("성공");
-	 	location.href = "view.jsp?num=<%=num%>";
+	 	location.href = "view.jsp?num=<%=num%>&page=<%=cPage%>";
 	</script>
 	<%}else { %>
 	<script>
