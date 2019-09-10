@@ -48,27 +48,25 @@
 							<div class="form-group row">
 								<label class="col-form-label col-sm-2" for="num">부서 번호</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name="num" value="<%=num%>"id="num" placeholder="부서 번호를 입력해 주세요">
+									<p><%=num%></p>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-form-label col-sm-2" for="name">부서 이름</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name="name" value="<%=name%>" id="name" placeholder="부서 이름을 입력해 주세요">
+									<p><%=name%></p>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-form-label col-sm-2" for="loc">부서 지역</label>
 								<div class="col-sm-10">
-									<input class="form-control" name="loc" value="<%=loc%>" id="loc" placeholder="부서 지역을 입력해 주세요"></input>
+									<p><%=loc%></p>
 								</div>
 							</div>
 							<input type="hidden" name="page" value="<%=cPage%>"/>
 						</form>
 
 						<div class="text-right">
-							<a href="" id="modifyDept" class="btn btn-outline-primary">수정</a>
-							<a href="" id="deleteDept" class="btn btn-outline-danger">삭제</a>
 							<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-success">리스트</a>
 						</div>
 						<script>

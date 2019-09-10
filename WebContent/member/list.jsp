@@ -29,7 +29,7 @@
 	int startPage = 0;
 	int endPage = 0;
 	int start = (cPage-1)*length;
-
+	int pageNum = 0;
 
 	MemberDao dao = MemberDao.getInstance();
 	ArrayList<MemberDto> list = dao.select(start,length);
@@ -37,6 +37,8 @@
 	int totalRows = dao.getRows();
 	
 	totalPage = totalRows%length == 0 ? totalRows/length : totalRows/length +1;
+	
+	pageNum = totalRows + (cPage - 1)*(-length);
 	
 	if(totalPage == 0){
 		totalPage = 1;
@@ -100,7 +102,7 @@
 											String regdate = dto.getRegdate();
 								%>
 								<tr>
-									<th scope="row"><%=seq %></th>
+									<th scope="row"><%=pageNum-- %></th>
 									<td><%=name %></td>
 									<td><a href="view.jsp?seq=<%=seq%>&page=<%=cPage %>"><%=id %></a></td>
 									<td><%=email %></td>
@@ -169,11 +171,6 @@
 								
 							</ul>
 						</nav>
-
-						<div class="text-right">
-							<a href="register.jsp?page=<%=cPage %>" class="btn btn-outline-primary">등록</a>
-						</div>
-
 					</div>
 				</div>
 			</div>

@@ -144,10 +144,6 @@
 								
 							</ul>
 						</nav>
-						<div class="text-right">
-							<a href="write.jsp" id="saveEmp" class="btn btn-outline-primary">직원등록</a>
-							<a href="" class="btn btn-outline-success">리스트</a>
-						</div>
 					</div>
 				</div>
 			</div>

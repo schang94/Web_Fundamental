@@ -75,7 +75,27 @@
 								$("#pwdMessage").html('');
 							}
 
-							f.submit();
+							if ($("#captchaCode").val().length == 0) {
+								alert("캡차코드를 입력하시오.")
+								$("#captchaCode").focus();
+								return;
+							}
+							
+							$.ajax({
+								type : 'GET',
+								url : 'captcha/getKeyResult.jsp?key='+captchaKey+'&value='+$("#captchaCode").val(),
+								dataType : 'json',
+								success : function(json){
+									console.log(json);
+									if(json.result === true){
+										f.submit();
+									} else {
+										alert("챕차코드가 잘못 입력 되었습니다.");
+										$("#captchaCode").focus();
+										$("#captchaCode").val(' ');
+									}
+								}
+							});
 						});
 
 						$("#email").on("keyup", function() {
@@ -85,6 +105,11 @@
 						$("#pwd").on("keyup", function() {
 							$('#pwdMessage').html('');
 							$("#pwd").removeClass("is-invalid");
+						});
+						
+						$("#refreshNumber").on("click",function(e){
+							e.preventDefault();
+							loadImage();
 						});
 						var loadImage = function() {
 							$.ajax(

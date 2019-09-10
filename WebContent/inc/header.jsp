@@ -2,7 +2,8 @@
 <%@ page pageEncoding="UTF-8"%>
 <%
 	MemberDto memberDto = (MemberDto)session.getAttribute("member");
-	
+	String conPath = request.getContextPath();
+	System.out.println(conPath);
 %>
 
 <!doctype html>
@@ -42,24 +43,35 @@
 					<a class="nav-link" href="/">Home</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/notice/list.jsp">Noitce</a>
+					<a class="nav-link" href="<%=conPath%>/notice/list.jsp">Noitce</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/dept/list.jsp">Department</a>
+					<a class="nav-link" href="<%=conPath%>/dept/list.jsp">Department</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/emp_ajax/list.jsp">Employee</a>
+					<a class="nav-link" href="<%=conPath%>/emp_ajax/list.jsp">Employee</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/member/list.jsp">Member</a>
+					<a class="nav-link" href="<%=conPath%>/member/list.jsp">Member</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/file/index.jsp">File Upload</a>
+					<a class="nav-link" href="<%=conPath%>/file/index.jsp">File Upload</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<%=conPath%>/crawling/index.jsp">Crawling</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<%=conPath%>/qrcode/index.jsp">Qrcode</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<%=conPath%>/shorten/index.jsp">Shorten URL</a>
 				</li>
 			</ul>
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a class="nav-link" href="/member/register.jsp"><i class="fa fa-file-text-o"></i> Register</a>
+					<%if(memberDto == null) {%>
+						<a class="nav-link" href="/member/register.jsp"><i class="fa fa-file-text-o"></i> Register</a>
+					<%} %>
 				</li>
 				<li class="nav-item">
 					<%if(memberDto == null) {%>

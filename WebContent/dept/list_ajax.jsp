@@ -132,8 +132,4 @@
 		</ul>
 	</nav>
 
-	<div class="text-right">
-		<a href="write.jsp?page=<%=cPage%>" class="btn btn-outline-primary">부서등록</a> <a
-			href="" class="btn btn-outline-success">리스트</a>
-	</div>
 </div>
